@@ -1,0 +1,17 @@
+@import "tailwindcss"; /* Optional if you're combining Tailwind with Mantine */
+
+/* Reset styles provided by Mantine */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif; /* Use Mantine's default or your preferred font */
+  background-color: #f8f9fa; /* Optional: Set a default background color */
+  color: #212529; /* Optional: Set a default text color */
+}
+
+/* Optional: Add custom styles or overrides */
+:root {
+  --mantine-primary-color: #1c7ed6; /* Example: Customize Mantine's primary color */
+  --mantine-font-family: 'Inter', sans-serif; /* Example: Customize the font family */
+}

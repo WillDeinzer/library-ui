@@ -1,5 +1,8 @@
 import { Button, Group, Modal, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
 import React, { useEffect } from "react";
+import { postData } from "@/app/services/apiService";
+import { setSessionItem } from "@/app/services/sessionService";
+
 
 export default function AccountModal({
   opened,
@@ -11,24 +14,61 @@ export default function AccountModal({
   const [signType, setSignType] = React.useState<string>("SignIn");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
+  // Handle sign-in and account creation
 
   const handleSignIn = () => {
-    // Handle sign-in logic here
+    setLoading(true);
+    const loginData = {
+      "username": username,
+      "password": password,
+      "email": null
+    }
     console.log("Signing in...");
-    onClose();
+    postData("login", loginData)
+      .then((response) => {
+        console.log("Logged in successfully.");
+        console.log("Response:", response);
+        setLoading(false);
+        onClose();
+      })
+      .catch((error) => {
+        console.log("Error logging in:", error);
+        setLoading(false);
+      });
   }
 
   const handleCreateAccount = () => {
-    // Handle account creation logic here
+    setLoading(true);
+    const accountData = {
+      "username": username,
+      "password": password,
+      "email": email || null
+    }
     console.log("Creating account...");
-    onClose();
+    postData("create_account", accountData)
+      .then((response) => {
+        console.log("Account created successfully. Logged in.");
+        console.log("Response:", response);
+        setLoading(false);
+        onClose();
+      })
+      .catch((error) => {
+        console.log("Error creating account:", error);
+        setLoading(false);
+      })
   }
+
+  // Reset fields when modal opens
 
   useEffect(() => {
     if (opened) {
       setUsername("");
       setPassword("");
       setSignType("SignIn");
+      setEmail("");
     }
   }, []);
 
@@ -54,7 +94,7 @@ export default function AccountModal({
                     onChange={(event) => setPassword(event.currentTarget.value)}
                     style={{ width: "100%" }}
                 />
-                <Button color="blue" onClick={() => handleSignIn()}>Sign In</Button>
+                <Button color="blue" loading={loading} onClick={() => handleSignIn()}>Sign In</Button>
                 <Group justify="center" style={{ width: "100%" }}>
                     <Text size="sm">Don't have an account?</Text>
                     <Button size="xs" color="blue" onClick={() => setSignType("CreateAccount")}>Create an Account</Button>
@@ -79,7 +119,14 @@ export default function AccountModal({
                     onChange={(event) => setPassword(event.currentTarget.value)}
                     style={{ width: "100%" }}
                 />
-                <Button color="blue" onClick={() => handleCreateAccount()}>Create Account</Button>
+                <TextInput
+                    label="Email"
+                    placeholder="Enter your email (optional)"
+                    value={email}
+                    onChange={(event) => setEmail(event.currentTarget.value)}
+                    style={{ width: "100%"}}
+                />
+                <Button color="blue" loading={loading} onClick={() => handleCreateAccount()}>Create Account</Button>
                 <Group justify="center" style={{ width: "100%" }}>
                     <Text size="sm">Already have an account?</Text>
                     <Button size="xs" color="blue" onClick={() => setSignType("SignIn")}>Sign In</Button>

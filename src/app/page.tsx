@@ -1,19 +1,37 @@
 "use client";
-import { ActionIcon, AppShell, Button, Group, Title, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, AppShell, Button, Group, Title, Text, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { IconSun, IconMoon } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AccountModal from './components/account/accountModal';
+import { getSessionItem, setSessionItem } from './services/sessionService';
+import React from 'react';
 
 export default function Home() {
   const [opened, { toggle }] = useDisclosure();
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true});
   const [accountModalOpened, setAccountModalOpened] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const onClose = () => {
     setAccountModalOpened(false);
+    if (getSessionItem("loggedIn")) {
+      setLoggedIn(true);
+    }
   }
+
+  const signOut = () => {
+    setSessionItem("loggedIn", false);
+    setSessionItem("username", null);
+    setLoggedIn(false);
+    console.log("User signed out");
+  }
+
+  useEffect(() => {
+    const isLoggedIn = getSessionItem("loggedIn") && getSessionItem("loggedIn") === true;
+    setLoggedIn(isLoggedIn);
+  }, []);
 
   return (
     <AppShell
@@ -46,9 +64,15 @@ export default function Home() {
             >
               {computedColorScheme === 'dark' ? <IconSun stroke={1.5} /> : <IconMoon stroke={1.5} />}
             </ActionIcon>
-            <Button color="blue" onClick={() => setAccountModalOpened(true)}>
-              Sign In
-            </Button>
+            {loggedIn ? (
+              <Button color="blue" onClick={() => signOut()}>
+                Sign Out
+              </Button>
+            ) : (
+              <Button color="blue" onClick={() => setAccountModalOpened(true)}>
+                Sign In
+              </Button>
+            )}
           </Group>
         </div>
       </AppShell.Header>

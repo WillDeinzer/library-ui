@@ -1,0 +1,122 @@
+export const booksSamplePayload = [
+    {
+        "bookid": 1,
+        "title": "Book One",
+        "author": "Author One",
+        "isbn": "1234567890",
+        "publisher": "Publisher One",
+        "publication_date": "2023-01-01",
+        "edition": "First",
+        "genre": "Fiction",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 2,
+        "title": "Book Two",
+        "author": "Author Two",
+        "isbn": "0987654321",
+        "publisher": "Publisher Two",
+        "publication_date": "2023-02-01",
+        "edition": "Second",
+        "genre": "Non-Fiction",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 3,
+        "title": "The Hidden Forest",
+        "author": "Alice Green",
+        "isbn": "1111111111",
+        "publisher": "Nature Press",
+        "publication_date": "2022-05-15",
+        "edition": "First",
+        "genre": "Adventure",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 4,
+        "title": "Journey to Mars",
+        "author": "David Spacey",
+        "isbn": "2222222222",
+        "publisher": "Galactic Books",
+        "publication_date": "2021-08-12",
+        "edition": "Third",
+        "genre": "Science Fiction",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 5,
+        "title": "History of Ancient Rome",
+        "author": "Julia Carter",
+        "isbn": "3333333333",
+        "publisher": "Historic Reads",
+        "publication_date": "2020-11-20",
+        "edition": "Second",
+        "genre": "History",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 6,
+        "title": "Cooking 101",
+        "author": "Chef Marco",
+        "isbn": "4444444444",
+        "publisher": "Kitchen House",
+        "publication_date": "2022-01-05",
+        "edition": "First",
+        "genre": "Cooking",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 7,
+        "title": "Mastering TypeScript",
+        "author": "Jane Developer",
+        "isbn": "5555555555",
+        "publisher": "CodeWorld",
+        "publication_date": "2023-03-10",
+        "edition": "Second",
+        "genre": "Programming",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 8,
+        "title": "The Mindful Path",
+        "author": "Michael Zen",
+        "isbn": "6666666666",
+        "publisher": "Wellness Press",
+        "publication_date": "2021-06-30",
+        "edition": "First",
+        "genre": "Self-Help",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 9,
+        "title": "Ocean Mysteries",
+        "author": "Sarah Waters",
+        "isbn": "7777777777",
+        "publisher": "Blue Planet",
+        "publication_date": "2020-09-18",
+        "edition": "First",
+        "genre": "Science",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    },
+    {
+        "bookid": 10,
+        "title": "Legends of the East",
+        "author": "Hiro Tanaka",
+        "isbn": "8888888888",
+        "publisher": "Cultural Books",
+        "publication_date": "2019-12-25",
+        "edition": "Fourth",
+        "genre": "Mythology",
+        "checkedoutbyaccountid": null,
+        "checkedoutbyusername": null
+    }
+];

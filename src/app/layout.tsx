@@ -5,7 +5,7 @@ import {
   ColorSchemeScript,
   mantineHtmlProps,
 } from "@mantine/core";
-import { theme } from "../../theme";
+import Shell from "./components/shell/shell";
 
 export const metadata = {
   title: "Mantine Next.js template",
@@ -24,7 +24,9 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="dark">{children}</MantineProvider>
+        <MantineProvider defaultColorScheme="dark">
+          <Shell>{children}</Shell>
+        </MantineProvider>
       </body>
     </html>
   );

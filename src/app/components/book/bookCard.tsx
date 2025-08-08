@@ -8,7 +8,7 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book }: BookCardProps) {
-    const [inWishlist, setInWishlist] = useState(false);
+    const [inWishlist, setInWishlist] = useState<boolean>(false);
 
     const handleAddToWishlist = () => {
         setInWishlist(!inWishlist);
@@ -19,7 +19,20 @@ export default function BookCard({ book }: BookCardProps) {
     }
 
     return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card 
+            shadow="sm" 
+            padding="lg" 
+            radius="md" 
+            withBorder
+            style={{
+                transition: "transform 150ms ease, box-shadow 150ms ease",
+                cursor: "pointer",
+                "&:hover": {
+                transform: "translateY(-5px)",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+                },
+            }}
+        >
             <Tooltip label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}>
                 <ActionIcon
                     variant="filled"

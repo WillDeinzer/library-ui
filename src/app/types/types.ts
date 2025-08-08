@@ -17,3 +17,7 @@ export interface Review {
     review_date: string;
     book_isbn: string;
 }
+
+export interface addBookData {
+    isbn: string;
+}

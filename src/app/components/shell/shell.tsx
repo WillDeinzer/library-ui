@@ -17,30 +17,18 @@ import { IconSun, IconMoon, IconHome, IconBook, IconMessage, IconTrophy } from "
 import { useDisclosure } from "@mantine/hooks";
 import AccountModal from "../account/accountModal";
 import { getSessionItem, setSessionItem } from "@/app/services/sessionService";
+import { useAuth } from "@/app/contexts/authContext";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
     const [opened, { toggle }] = useDisclosure(false);
     const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true});
     const [accountModalOpened, setAccountModalOpened] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(false);
 
-    const signOut = () => {
-        setSessionItem("loggedIn", false);
-        setSessionItem("username", null);
-        setLoggedIn(false);
-        console.log("User signed out");
-    }
-    useEffect(() => {
-        const isLoggedIn = getSessionItem("loggedIn") && getSessionItem("loggedIn") === true;
-        setLoggedIn(isLoggedIn);
-    }, []);
+    const { isSignedIn, signOut } = useAuth();
 
     const onClose = () => {
         setAccountModalOpened(false);
-        if (getSessionItem("loggedIn")) {
-        setLoggedIn(true);
-        }
     }
 
     const navItems = [
@@ -90,7 +78,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
                     >
                     {computedColorScheme === 'dark' ? <IconSun stroke={1.5} /> : <IconMoon stroke={1.5} />}
                     </ActionIcon>
-                    {loggedIn ? (
+                    {isSignedIn ? (
                     <Button color="blue" onClick={() => signOut()}>
                         Sign Out
                     </Button>

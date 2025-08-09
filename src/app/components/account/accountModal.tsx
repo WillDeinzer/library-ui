@@ -2,6 +2,7 @@ import { Button, Group, Modal, PasswordInput, Stack, Text, TextInput } from "@ma
 import React, { useEffect } from "react";
 import { postData } from "@/app/services/apiService";
 import { setSessionItem } from "@/app/services/sessionService";
+import { useAuth } from "@/app/contexts/authContext";
 
 
 export default function AccountModal({
@@ -19,6 +20,7 @@ export default function AccountModal({
   const [error, setError] = React.useState(false);
   const [usernameErrorMessage, setUsernameErrorMessage] = React.useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
+  const { signIn } = useAuth();
 
   // Handle sign-in and account creation
 
@@ -33,15 +35,12 @@ export default function AccountModal({
     postData("login", loginData)
       .then((response: any) => {
         if (response.error) {
-          console.log("Error logging in:", response.error);
           setError(true);
           handleError(response.error);
           setLoading(false);
         } else {
-          console.log("Logged in successfully.");
-          console.log("Response:", response);
           setLoading(false);
-          showSignedIn(response.username);
+          showSignedIn(response.username, response.account_id, response.is_admin);
           setDefaults();
           onClose();
         }
@@ -64,15 +63,12 @@ export default function AccountModal({
     postData("create_account", accountData)
       .then((response: any) => {
         if (response.error) {
-          console.log("Error creating account:", response.error);
           setError(true);
           handleError(response.error);
           setLoading(false);
         } else {
-          console.log("Account created successfully.");
-          console.log("Response:", response);
           setLoading(false);
-          showSignedIn(response.username);
+          showSignedIn(response.username, response.account_id, response.is_admin);
           setDefaults();
           onClose();
         }
@@ -84,11 +80,12 @@ export default function AccountModal({
       });
   }
 
-  const showSignedIn = (username: string) => {
-    setSessionItem("username", username);
-    setSessionItem("loggedIn", true);
+  const showSignedIn = (username: string, account_id: number, is_admin: boolean) => {
+    signIn(account_id);
+    sessionStorage.setItem("username", username);
+    sessionStorage.setItem("is_admin", is_admin.toString());
     console.log("User signed in:", username);
-  }
+  };
 
   const handleError = (error: any) => {
     if (error.includes("does not exist")) {

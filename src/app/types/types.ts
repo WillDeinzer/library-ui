@@ -21,3 +21,8 @@ export interface Review {
 export interface addBookData {
     isbn: string;
 }
+
+export interface wishlistData {
+    account_id: number;
+    isbn: string;
+}

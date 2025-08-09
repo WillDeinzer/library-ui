@@ -6,6 +6,7 @@ import {
   mantineHtmlProps,
 } from "@mantine/core";
 import Shell from "./components/shell/shell";
+import { AuthProvider } from "./contexts/authContext";
 
 export const metadata = {
   title: "Mantine Next.js template",
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <MantineProvider defaultColorScheme="dark">
-          <Shell>{children}</Shell>
+          <AuthProvider>
+            <Shell>{children}</Shell>
+          </AuthProvider>
         </MantineProvider>
       </body>
     </html>

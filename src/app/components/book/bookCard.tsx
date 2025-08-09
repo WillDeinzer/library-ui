@@ -1,22 +1,33 @@
 import { Card, Image, Stack, Title, Text, Button, ActionIcon, Tooltip } from "@mantine/core";
 import { IconArrowRight, IconBookmark, IconBookmarkFilled } from '@tabler/icons-react'
 import { Book } from "../../types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/app/contexts/authContext";
 
 interface BookCardProps {
     book: Book
+    addRemoveWishlist: (isbn: string, add: boolean) => void;
+    inWishlist: boolean;
 }
 
-export default function BookCard({ book }: BookCardProps) {
-    const [inWishlist, setInWishlist] = useState<boolean>(false);
+export default function BookCard(props: BookCardProps) {
+    const [inWishlist, setInWishlist] = useState<boolean>(props.inWishlist);
+    const book = props.book;
+    const addRemoveWishlist: (isbn: string, add: boolean) => void = props.addRemoveWishlist;
+    const { isSignedIn } = useAuth();
 
-    const handleAddToWishlist = () => {
+    const handleWishlist = () => {
+        addRemoveWishlist(book.isbn, !inWishlist);
         setInWishlist(!inWishlist);
     }
 
     const handleSeeMore = () => {
 
     }
+
+    useEffect(() => {
+        setInWishlist(props.inWishlist);
+    }, [props.inWishlist]);
 
     return (
         <Card 
@@ -33,12 +44,14 @@ export default function BookCard({ book }: BookCardProps) {
                 },
             }}
         >
+
+        {isSignedIn && 
             <Tooltip label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}>
                 <ActionIcon
                     variant="filled"
                     color={inWishlist ? "red" : 'gray'}
                     size="lg"
-                    onClick={handleAddToWishlist}
+                    onClick={handleWishlist}
                     style={{
                         position: 'absolute',
                         top: 10,
@@ -49,6 +62,8 @@ export default function BookCard({ book }: BookCardProps) {
                     {inWishlist ? <IconBookmarkFilled size={20} /> : <IconBookmark size={20} />}
                 </ActionIcon>
             </Tooltip>
+        }
+
 
             <Tooltip label="See more">
                 <ActionIcon

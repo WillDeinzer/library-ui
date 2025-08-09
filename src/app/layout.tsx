@@ -5,7 +5,7 @@ import {
   ColorSchemeScript,
   mantineHtmlProps,
 } from "@mantine/core";
-import Shell from "./components/shell/shell";
+import Shell from "./components/shell/Shell";
 import { AuthProvider } from "./contexts/authContext";
 
 export const metadata = {

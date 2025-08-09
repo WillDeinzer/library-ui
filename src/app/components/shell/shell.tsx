@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   AppShell,
@@ -15,9 +15,8 @@ import {
 } from "@mantine/core";
 import { IconSun, IconMoon, IconHome, IconBook, IconMessage, IconTrophy } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
-import AccountModal from "../account/accountModal";
-import { getSessionItem, setSessionItem } from "@/app/services/sessionService";
 import { useAuth } from "@/app/contexts/authContext";
+import AccountModal from "../account/AccountModal";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
     const [opened, { toggle }] = useDisclosure(false);
@@ -40,7 +39,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
 
     return (
         <AppShell
-            padding="md"
+            padding={0}
             header={{ height: 60 }}
             navbar={{
                 width: 300,

@@ -8,12 +8,14 @@ interface BookCardProps {
     book: Book
     addRemoveWishlist: (isbn: string, add: boolean) => void;
     inWishlist: boolean;
+    handleSeeMore: (book: Book) => void;
 }
 
 export default function BookCard(props: BookCardProps) {
     const [inWishlist, setInWishlist] = useState<boolean>(props.inWishlist);
     const book = props.book;
     const addRemoveWishlist: (isbn: string, add: boolean) => void = props.addRemoveWishlist;
+    const handleSeeMore: (book: Book) => void = props.handleSeeMore;
     const { isSignedIn } = useAuth();
 
     const handleWishlist = () => {
@@ -21,8 +23,8 @@ export default function BookCard(props: BookCardProps) {
         setInWishlist(!inWishlist);
     }
 
-    const handleSeeMore = () => {
-
+    const seeMoreClick = () => {
+        handleSeeMore(book);
     }
 
     useEffect(() => {
@@ -70,7 +72,7 @@ export default function BookCard(props: BookCardProps) {
                     variant="filled"
                     color="blue"
                     size="lg"
-                    onClick={handleSeeMore}
+                    onClick={seeMoreClick}
                     style={{
                         position: 'absolute',
                         top: 10,

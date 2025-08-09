@@ -26,3 +26,10 @@ export interface wishlistData {
     account_id: number;
     isbn: string;
 }
+
+export interface submitReviewData {
+    account_id: number;
+    review_text: string;
+    rating: number;
+    book_isbn: string;
+}

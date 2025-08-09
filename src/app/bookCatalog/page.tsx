@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { Book, wishlistData } from "../types/types";
 import { getData, postData } from "../services/apiService";
-import BookCard from "../components/book/bookCard";
+import BookCard from "../components/book/BookCard";
 import { Autocomplete, Box, Button, Container, Flex, LoadingOverlay, Paper, SimpleGrid, Title, Tooltip } from "@mantine/core";
-import AddBookModal from "../components/book/addBookModal";
+import AddBookModal from "../components/book/AddBookModal";
 import { getSessionItem } from "@/app/services/sessionService";
 import { useAuth } from "../contexts/authContext";
+import BookDetails from "../components/book/BookDetails";
 
 export default function BookCatalogPage() {
     const [books, setBooks] = useState<Book[]>([]);
@@ -16,6 +17,8 @@ export default function BookCatalogPage() {
     const [wishlist, setWishlist] = useState<string[]>([]);
     const [showWishlist, setShowWishlist] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
+    const [seeMore, setSeeMore] = useState<boolean>(false);
+    const [focusedBook, setFocusedBook] = useState<Book | null>(null);
     const { accountId, isSignedIn } = useAuth();
 
     const addRemoveWishlist = (isbn: string, add: boolean) => {
@@ -115,7 +118,39 @@ export default function BookCatalogPage() {
         setDisplayedBooks(filtered);
     };
 
+    // Handlers for going to see more component and going back
+
+    const handleSeeMore = (book: Book) => {
+        setSeeMore(true);
+        setFocusedBook(book);
+    }
+
+    const handleBack = () => {
+        setSeeMore(false);
+        setFocusedBook(null);
+    }
+
     return (
+        <div
+        style={{
+            minHeight: "100vh",
+            backgroundImage: "url('/bookDetailsBg.jpg')",  // or any floral bg you want
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            position: "relative",
+            padding: "2rem",
+        }}
+        >
+        {/* Faded overlay */}
+        <div
+            style={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "rgba(255, 255, 255, 0.6)", // tweak for fade amount
+            zIndex: 0,
+            }}
+        />
+        { !seeMore && 
         <Container size="xl" py="md">
             <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <Paper
@@ -162,7 +197,13 @@ export default function BookCatalogPage() {
                 spacing="md"
             >
                 {displayedBooks.map((book) => (
-                <BookCard key={book.isbn} book={book} addRemoveWishlist={addRemoveWishlist} inWishlist={wishlist.some((isbn) => isbn === book.isbn)} />
+                <BookCard 
+                    key={book.isbn}
+                    book={book} 
+                    addRemoveWishlist={addRemoveWishlist}
+                    inWishlist={wishlist.some((isbn) => isbn === book.isbn)}
+                    handleSeeMore={handleSeeMore}
+                />
                 ))}
             </SimpleGrid>
             <AddBookModal
@@ -170,6 +211,10 @@ export default function BookCatalogPage() {
                 onClose={onClose}
 
             />
-        </Container>
+        </Container>}
+        { seeMore && focusedBook &&
+            <BookDetails book={focusedBook} handleBack={handleBack} />
+        }
+        </div>
     );
 }

@@ -19,6 +19,7 @@ export default function BookCatalogPage() {
     const [searchValue, setSearchValue] = useState<string>("");
     const [seeMore, setSeeMore] = useState<boolean>(false);
     const [focusedBook, setFocusedBook] = useState<Book | null>(null);
+    const [admin, setAdmin] = useState<boolean>(false);
     const { accountId, isSignedIn } = useAuth();
 
     const addRemoveWishlist = (isbn: string, add: boolean) => {
@@ -70,7 +71,9 @@ export default function BookCatalogPage() {
 
     const getWishlist = (allBooks: Book[]) => {
         if (!isSignedIn) {
-            setDisplayedBooks(allBooks)
+            setDisplayedBooks(allBooks);
+            setLoading(false);
+            return;
         }
         const headers = {
             "account_id": getSessionItem("account_id")
@@ -97,6 +100,12 @@ export default function BookCatalogPage() {
     useEffect(() => {
         setLoading(true);
         getBookData();
+        if (getSessionItem("is_admin") === true) {
+            setAdmin(true);
+        }
+        if (isSignedIn === false) {
+            setAdmin(false);
+        }
     }, [isSignedIn]);
 
     const autocompleteData = books.map(book => book.title);
@@ -176,7 +185,7 @@ export default function BookCatalogPage() {
                         Book Catalog
                     </Title>
 
-                    <Button onClick={() => {
+                    <Button disabled={!admin} onClick={() => {
                         setOpened(true);
                     }}>
                         Add/Remove Book

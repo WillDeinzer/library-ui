@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = () => {
     sessionStorage.removeItem("account_id");
+    sessionStorage.removeItem("is_admin");
     setAccountId(-1);
     setIsSignedIn(false);
   };

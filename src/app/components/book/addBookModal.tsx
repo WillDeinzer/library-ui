@@ -13,7 +13,7 @@ interface bookModalProps {
 export default function AddBookModal({ opened, onClose}: bookModalProps) {
     const [loading, setLoading] = useState<boolean>(false)
     const [ISBN, setISBN] = useState<string>("");
-    const [add, { toggle }] = useDisclosure(false);
+    const [add, setAdd] = useState<boolean>(true);
     
     const handleBookSubmit = () => {
         setLoading(true);
@@ -24,12 +24,18 @@ export default function AddBookModal({ opened, onClose}: bookModalProps) {
             .then((response) => {
                 console.log(response);
                 setLoading(false);
+                setDefaults();
                 onClose();
             })
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
             })
+    }
+
+    const setDefaults = () => {
+        setISBN("");
+        setAdd(true);
     }
 
     return (
@@ -40,9 +46,9 @@ export default function AddBookModal({ opened, onClose}: bookModalProps) {
         >
             <Tooltip label={add ? "Remove book" : "Add book"}>
                 <ActionIcon
-                    color={add ? "red" : "green"}
+                    color={!add ? "red" : "green"}
                     size="lg"
-                    onClick={toggle}
+                    onClick={() => setAdd(!add)}
                     style={{
                         position: 'absolute',
                         bottom: 20,
@@ -50,7 +56,7 @@ export default function AddBookModal({ opened, onClose}: bookModalProps) {
                         zIndex: 10
                     }}
                 >
-                    {add ? <IconX size={20} /> : <IconCheck size={20} />}
+                    {!add ? <IconX size={20} /> : <IconCheck size={20} />}
                 </ActionIcon>
             </Tooltip>
             <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />

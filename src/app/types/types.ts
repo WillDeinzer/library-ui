@@ -33,3 +33,8 @@ export interface submitReviewData {
     rating: number;
     book_isbn: string;
 }
+
+export interface Message {
+    from: "user" | "bot";
+    text: string;
+}

@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="dark">
+        <MantineProvider defaultColorScheme="light">
           <AuthProvider>
             <Shell>{children}</Shell>
           </AuthProvider>

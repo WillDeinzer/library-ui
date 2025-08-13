@@ -87,7 +87,7 @@ export default function BookCard(props: BookCardProps) {
             
             <Card.Section>
                 <Image
-                    src={book.image}
+                    src={book.image || "/default.jpg"}
                     alt={"Cover of " + book.title}
                     height={200}
                     radius="lg"

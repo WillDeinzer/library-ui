@@ -11,11 +11,17 @@ export interface Book {
 
 export interface Review {
     review_id: number;
-    account_id: number;
-    review_text: string;
+    book_isbn: string;
     rating: number;
     review_date: string;
-    book_isbn: string;
+    formatted_date: string | null;
+    review_text: {
+        OverallThoughts: string;
+        FavoriteCharacter: string | null;
+        FavoritePart: string | null;
+    }
+    username: string;
+    likes: number;
 }
 
 export interface addBookData {

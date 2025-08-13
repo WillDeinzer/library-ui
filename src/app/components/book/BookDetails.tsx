@@ -1,9 +1,12 @@
 import { useAuth } from "@/app/contexts/authContext";
-import { Book } from "../../types/types";
-import { ActionIcon, Button, Card, Container, Flex, Group, Image, LoadingOverlay, Paper, Stack, Text, Title, Tooltip } from "@mantine/core";
-import { useState } from "react";
-import { IconArrowLeft } from "@tabler/icons-react";
+import { Book, Review } from "../../types/types";
+import { ActionIcon, Card, Container, Flex, Group, Image, LoadingOverlay, Paper, ScrollArea, Stack, Text, Title, Tooltip } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { IconArrowLeft, IconMessagePlus } from "@tabler/icons-react";
 import ReviewModal from "../review/ReviewModal";
+import { getData } from "@/app/services/apiService";
+import dayjs from "dayjs";
+import ReviewCard from "../review/ReviewCard";
 
 interface BookDetailsProps {
     book: Book
@@ -13,12 +16,39 @@ interface BookDetailsProps {
 export default function bookDetails(props: BookDetailsProps) {
     const [loading, setLoading] = useState<boolean>(false);
     const [opened, setOpened] = useState<boolean>(false);
-    const { accountId, isSignedIn } = useAuth();
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [displayedReviews, setDisplayedReviews] = useState<Review[]>([]);
+    const { isSignedIn } = useAuth();
     const book : Book = props.book;
     const handleBack : () => void = props.handleBack;
 
     const onClose = () => {
         setOpened(false);
+    }
+
+    useEffect(() => {
+        getReviews();
+    }, [])
+
+    const getReviews = () => {
+        setLoading(true);
+        const headers = {
+            isbn: book.isbn
+        }
+        getData<Review[]>("getReviewsByBook", headers)
+            .then((response) => {
+                const formattedReviews = response.map((review) => ({
+                    ...review,
+                    formatted_date: dayjs(review.review_date).format("MMMM D, YYYY h:mm A"),
+                }));
+                setReviews(formattedReviews);
+                setDisplayedReviews(formattedReviews);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                setLoading(false);
+            });
     }
 
     return (
@@ -80,13 +110,55 @@ export default function bookDetails(props: BookDetailsProps) {
                 </Card>
             </Flex>
             </Paper>
-            <Button size="md" onClick={() => setOpened(true)}>Submit review</Button>
+            <Paper
+                p="md"
+                style={{
+                position: "relative",
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 20,
+                minHeight: 0,  // crucial to allow ScrollArea to shrink properly inside flex container
+                }}
+            >
+                <Group justify="center">
+                <Title order={3}>Reviews</Title>
+                </Group>
+                <Tooltip label="Write a Review">
+                <ActionIcon
+                    variant="filled"
+                    color="blue"
+                    size="lg"
+                    disabled={!isSignedIn}
+                    onClick={() => setOpened(true)}
+                    style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}
+                >
+                    <IconMessagePlus size={20} />
+                </ActionIcon>
+                </Tooltip>
+
+                {/* Make ScrollArea flex-grow and set maxHeight or use flex: 1 */}
+                <ScrollArea
+                style={{ flex: 1, minHeight: 0, marginTop: "1rem" }}
+                >
+                <Stack gap="md">
+                    {displayedReviews.length > 0 ? (
+                    displayedReviews.map((review) => (
+                        <ReviewCard key={review.review_id} review={review} isSignedIn={isSignedIn} />
+                    ))
+                    ) : (
+                    <Text c="dimmed" ta="center">No reviews yet</Text>
+                    )}
+                </Stack>
+                </ScrollArea>
+            </Paper>
+
             <ReviewModal 
                 isbn={book.isbn}
                 title={book.title}
                 opened={opened}
                 onClose={onClose}
             />
-        </Container>
+            </Container>
     )
 }

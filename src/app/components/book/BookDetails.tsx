@@ -224,7 +224,7 @@ export default function bookDetails(props: BookDetailsProps) {
                     <IconArrowLeft size={20} />
                     </ActionIcon>
                 </Tooltip>
-                <Stack>
+                <Stack style={{ marginTop: '1.5rem' }}>
                     <Title order={3} style={{ textAlign: 'center', color: "white" }}>
                     {book.title}
                     </Title>

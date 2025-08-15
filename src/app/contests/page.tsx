@@ -107,7 +107,7 @@ export default function ContestsPage() {
                 <Title order={2} mb="md">Contest Winners</Title>
 
                 <Text mb="sm">
-                    Winners are selected from users who submit reviews. To increase your chances of winning, submit more reviews!
+                    Winners are selected from users who submit reviews. To increase your chances of winning, submit more reviews! Contact ldeinzer@buffaloschools.org to claim your prize!
                 </Text>
 
                 <Stack gap="sm" mb="md">

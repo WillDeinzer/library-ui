@@ -20,6 +20,7 @@ export interface Review {
         FavoriteCharacter: string | null;
         FavoritePart: string | null;
     }
+    account_id: number;
     username: string;
     likes: number;
 }
@@ -43,4 +44,9 @@ export interface submitReviewData {
 export interface Message {
     from: "user" | "bot";
     text: string;
+}
+
+export interface Winner {
+    winner_username: string;
+    win_time: string;
 }

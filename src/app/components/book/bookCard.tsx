@@ -35,15 +35,12 @@ export default function BookCard(props: BookCardProps) {
         <Card 
             shadow="sm" 
             padding="lg" 
-            radius="md" 
+            radius="md"
             withBorder
             style={{
-                transition: "transform 150ms ease, box-shadow 150ms ease",
-                cursor: "pointer",
-                "&:hover": {
-                transform: "translateY(-5px)",
-                boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-                },
+                background: "rgba(255, 255, 255, 0)", // semi-transparent white
+                backdropFilter: "blur(6px)", // frosted glass effect
+                WebkitBackdropFilter: "blur(6px)", // Safari support
             }}
         >
 
@@ -92,13 +89,32 @@ export default function BookCard(props: BookCardProps) {
                     height={200}
                     radius="lg"
                     fit="contain"
-                    style={{ display: "block", marginTop: "1.5rem", marginBottom: "1rem" }}
+                    style={{ display: "block", marginTop: "2rem", marginBottom: "1rem" }}
                 />
             </Card.Section>
 
-            <Stack align="center" gap="md" style={{"width": "100%"}}>
-                <Title order={4} style={{ textAlign: "center" }} >{book.title}</Title>
-                <Text size="md">{"By " + book.authors?.[0] }</Text>
+            <Stack align="center" gap={4} style={{ width: "100%" }}>
+                <Title
+                    order={4}
+                    style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontWeight: 700,
+                    letterSpacing: "0.5px",
+                    }}
+                >
+                    {book.title}
+                </Title>
+                <Text
+                    size="sm"
+                    style={{
+                    color: "rgba(255, 255, 255, 0.8)",
+                    fontStyle: "italic",
+                    fontWeight: 600
+                    }}
+                >
+                    {`By ${book.authors?.[0]}`}
+                </Text>
             </Stack>
         </Card>
     )

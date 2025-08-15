@@ -1,10 +1,10 @@
 "use client";
 
-import { ActionIcon, Button, Container, Group, Loader, Textarea, TextInput, Tooltip } from "@mantine/core";
-import { IconSend } from "@tabler/icons-react";
+import Link from "next/link";
+import { ActionIcon, Button, Container, Group, Loader, Textarea, Tooltip } from "@mantine/core";
+import { IconArrowLeft, IconSend } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/authContext";
-import { getData } from "../services/apiService";
 import { Message } from "../types/types";
 
 export default function BookChatPage() {
@@ -76,18 +76,39 @@ export default function BookChatPage() {
                 display: "flex",
                 flexDirection: "column",
                 height: "95vh",
-                backgroundImage: "url('/bookChatBg.jpg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
                 position: "relative",
             }}
         >
+            <Link href="/" passHref>
+                <Button
+                    variant="outline"
+                    radius="md"
+                    color="cyan"
+                    size="md"
+                    style={{
+                    position: "absolute",
+                    top: "1rem",
+                    left: "1rem",
+                    fontWeight: 600,
+                    color: "white",
+                    borderColor: "rgba(255,255,255,0.6)",
+                    backdropFilter: "blur(6px)", // frosted glass effect
+                    WebkitBackdropFilter: "blur(6px)", // Safari support
+                    zIndex: 500,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem", // space between icon and text
+                    }}
+                >
+                    <IconArrowLeft size={18} />
+                    Home
+                </Button>
+            </Link>
         <div
             style={{
             flex: 1,
             overflowY: "auto",
             padding: "1rem",
-            backgroundColor: "rgba(255,255,255,0.6)",
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
@@ -110,55 +131,58 @@ export default function BookChatPage() {
             </div>
         ))}
             <div ref={messagesEndRef} />
-      </div>
+        </div>
 
         <Container
             size="xl"
             w="100%"
             py="sm"
             style={{
-                borderTop: "1px solid #ccc",
-                backgroundColor: "rgba(255,255,255,0.9)",
+            borderTop: "1px solid #ccc",
+            backgroundColor: "transparent"
             }}
         >
             <Group justify="center" w="100%" style={{ marginBottom: "2vh" }}>
-                <Textarea
-                    style={{ flex: 1, backgroundColor: "transparent", border: "1px solid #ffffff", marginRight: 8 }}
-                    minRows={3}
-                    placeholder="Type your question"
-                    value={input}
-                    onChange={(e) => setInput(e.currentTarget.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter" && !loading && !e.shiftKey) {
-                            e.preventDefault();
-                            if (isSignedIn) {
-                                sendMessage();
-                            }
-                        }
+            <Textarea
+                style={{
+                flex: 1,
+                backgroundColor: "transparent",
+                marginRight: 8,
+                fontSize: "1.2rem",
+                minHeight: "4rem",
+                }}
+                minRows={2}
+                placeholder="Type your question"
+                value={input}
+                onChange={(e) => setInput(e.currentTarget.value)}
+                onKeyDown={(e) => {
+                if (e.key === "Enter" && !loading && !e.shiftKey) {
+                    e.preventDefault();
+                    if (isSignedIn) sendMessage();
+                }
+                }}
+            />
+            <Tooltip
+                label="You must be signed in to use this feature"
+                disabled={isSignedIn}
+                withArrow
+                position="top"
+            >
+                <span>
+                <ActionIcon
+                    color="blue"
+                    size="xl"                  // larger button
+                    radius="xl"
+                    variant="filled"
+                    disabled={loading || input.trim() === "" || !isSignedIn}
+                    onClick={() => {
+                    if (!loading && input.trim() !== "") sendMessage();
                     }}
-                />
-                <Tooltip
-                    label="You must be signed in to use this feature"
-                    disabled={isSignedIn}
-                    withArrow
-                    position="top"
                 >
-                    <span>
-                        <ActionIcon
-                            color="blue"
-                            size="lg"
-                            radius="xl"
-                            variant="filled"
-                            disabled={loading || input.trim() === "" || !isSignedIn}
-                            onClick={() => {
-                                if (!loading && input.trim() !== "") sendMessage();
-                            }}
-                        >
-                        
-                            {loading ? <Loader size="sm" color="white" /> : <IconSend size={20} />}
-                        </ActionIcon>
-                    </span>
-                </Tooltip>
+                    {loading ? <Loader size="sm" color="white" /> : <IconSend size={28} />} {/* bigger icon */}
+                </ActionIcon>
+                </span>
+            </Tooltip>
             </Group>
         </Container>
         </div>

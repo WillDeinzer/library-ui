@@ -1,27 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import {
   AppShell,
   Group,
   Title,
-  Burger,
-  ActionIcon,
   Button,
-  Stack,
-  Text,
-  useMantineColorScheme,
-  useComputedColorScheme,
 } from "@mantine/core";
-import { IconSun, IconMoon, IconHome, IconBook, IconMessage, IconTrophy } from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
 import { useAuth } from "@/app/contexts/authContext";
 import AccountModal from "../account/AccountModal";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
-    const [opened, { toggle }] = useDisclosure(false);
-    const { setColorScheme } = useMantineColorScheme();
-    const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true});
     const [accountModalOpened, setAccountModalOpened] = useState(false);
 
     const { isSignedIn, signOut } = useAuth();
@@ -30,71 +18,76 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         setAccountModalOpened(false);
     }
 
-    const navItems = [
-        { label: "Home", icon: IconHome, href: "/" },
-        { label: "Books", icon: IconBook, href: "/bookCatalog" },
-        { label: "Book Chat", icon: IconMessage, href: "/bookChat" },
-        { label: "Contests", icon: IconTrophy, href: "/contests" },
-    ];
-
     return (
         <AppShell
             padding={0}
             header={{ height: 60 }}
-            navbar={{
-                width: 300,
-                breakpoint: 'sm',
-                collapsed: { mobile: !opened },
-                
+            styles={{
+                main: {
+                minHeight: "100vh",
+                backgroundImage: "url('/bookDetailsBg.jpeg')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                },
             }}
         >
-            <AppShell.Header>
-                <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    height: '100%',
-                    width: '100%',
-                }}
-                >
-                <Burger 
-                    opened={opened}
-                    onClick={toggle}
-                    aria-label="Toggle navigation"
-                    hiddenFrom="sm"
-                    size="sm"
-                    style={{ paddingLeft: '1rem '}} 
-                />
-                <div style={{ flex: 1, textAlign: 'center' }}>
-                    <Title order={2}>Northwest Buffalo Community Library</Title>
+            <AppShell.Header
+            style={{
+                position: "fixed",         // stay at the top
+                top: 0,
+                width: "100%",             // span full width
+                height: 60,                // matches AppShell header height
+                backgroundColor: "#ffffff", // solid color (change as needed)
+                backgroundImage: "url('/bookChatBg.jpeg')", // optional, will overlay color
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.2)",    // subtle shadow
+                display: "flex",
+                alignItems: "center",
+                padding: "0 1rem",
+                zIndex: 1000,              // stays above all content
+            }}
+            >
+                <div style={{ flex: 1, textAlign: 'center', color: "white" }}>
+                    <Title order={1}>Northwest Buffalo Community Library</Title>
                 </div>
                 <Group align="center" style={{ paddingRight: '1rem' }}>
                     {isSignedIn ? (
-                    <Button color="blue" onClick={() => signOut()}>
+                    <Button
+                        variant="outline"
+                        radius="md"
+                        color="cyan"
+                        onClick={() => signOut()}
+                        style={{
+                            fontWeight: 600,
+                            color: "white",
+                            backdropFilter: "blur(6px)",
+                            WebkitBackdropFilter: "blur(6px)",
+                            borderColor: "rgba(255,255,255,0.6)",
+                            zIndex: 2000,
+                        }}>
                         Sign Out
                     </Button>
                     ) : (
-                    <Button color="blue" onClick={() => setAccountModalOpened(true)}>
+                    <Button 
+                        variant="outline"
+                        radius="md"
+                        color="cyan"
+                        onClick={() => setAccountModalOpened(true)}
+                        style={{
+                            fontWeight: 600,
+                            color: "white",
+                            backdropFilter: "blur(6px)",
+                            WebkitBackdropFilter: "blur(6px)",
+                            borderColor: "rgba(255,255,255,0.6)",
+                            zIndex: 2000,
+                        }}>
                         Sign In
                     </Button>
                     )}
                 </Group>
-                </div>
             </AppShell.Header>
-
-            <AppShell.Navbar>
-                <Text ta="center" size="md" style={{ marginTop: '1rem '}}>Pages</Text>
-                <Stack style={{ padding: '1rem' }}>
-                {navItems.map(({ label, icon: Icon, href }) => (
-                    <Link key={label} href={href}>
-                    <Group style={{ margin: '1rem'}}>
-                        <Icon size={24} />
-                        <Text size="sm">{label}</Text>
-                    </Group>
-                    </Link>
-                ))}
-                </Stack>
-            </AppShell.Navbar>
 
             <AppShell.Main>{children}</AppShell.Main>
 

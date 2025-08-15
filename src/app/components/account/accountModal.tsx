@@ -22,6 +22,9 @@ export default function AccountModal({
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const { signIn } = useAuth();
 
+  const MIN_USERNAME_LENGTH = 3;
+  const MIN_PASSWORD_LENGTH = 6;
+
   // Handle sign-in and account creation
 
   const handleSignIn = () => {
@@ -52,22 +55,36 @@ export default function AccountModal({
       });
   }
 
-  const handleCreateAccount = () => {
+const handleCreateAccount = () => {
+    // Reset previous errors
+    setUsernameErrorMessage("");
+    setPasswordErrorMessage("");
+    
+    // Validate lengths
+    if (username.length < MIN_USERNAME_LENGTH) {
+        setUsernameErrorMessage(`Username must be at least ${MIN_USERNAME_LENGTH} characters.`);
+        setError(true);
+        return;
+    }
+    if (password.length < MIN_PASSWORD_LENGTH) {
+        setPasswordErrorMessage(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
+        setError(true);
+        return;
+    }
+
     setLoading(true);
     const accountData = {
-      "username": username,
-      "password": password,
-      "email": email || null
-    }
-    console.log("Creating account...");
+      username,
+      password,
+      email: email || null
+    };
+
     postData("create_account", accountData)
       .then((response: any) => {
         if (response.error) {
           setError(true);
           handleError(response.error);
-          setLoading(false);
         } else {
-          setLoading(false);
           showSignedIn(response.username, response.account_id, response.is_admin);
           setDefaults();
           onClose();
@@ -76,10 +93,9 @@ export default function AccountModal({
       .catch((error) => {
         console.log("Error creating account:", error);
         setError(true);
-        setLoading(false);
-      });
-  }
-
+      })
+      .finally(() => setLoading(false));
+};
   const showSignedIn = (username: string, account_id: number, is_admin: boolean) => {
     signIn(account_id);
     sessionStorage.setItem("username", username);

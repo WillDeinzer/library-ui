@@ -1,18 +1,20 @@
 "use client";
-import { postData } from "@/app/services/apiService";
 import { Review } from "@/app/types/types";
 import { ActionIcon, Card, Group, Stack, Text, Tooltip } from "@mantine/core";
-import { IconStar, IconStarFilled, IconStarHalfFilled, IconThumbUp, IconThumbUpFilled } from "@tabler/icons-react"
-import { useState } from "react";
+import { IconStar, IconStarFilled, IconStarHalfFilled, IconThumbUp, IconThumbUpFilled, IconTrash } from "@tabler/icons-react"
 
 interface ReviewCardProps {
     review: Review,
-    isSignedIn: boolean
+    isSignedIn: boolean,
+    accountId: number,
+    currentlyLiked: boolean,
+    onToggleLike: () => void;
+    deleteReview: (review_id: number) => void;
 }
 
-export default function ReviewCard({ review, isSignedIn }: ReviewCardProps) {
-    const [liked, setLiked] = useState<boolean>(false);
-    const [likes, setLikes] = useState(review.likes || 0);
+export default function ReviewCard({ review, isSignedIn, accountId, currentlyLiked, onToggleLike, deleteReview}: ReviewCardProps) {
+
+    const thisUser : boolean = (accountId === review.account_id)
 
     const renderStars = (rating: number) => {
         const stars = [];
@@ -28,34 +30,11 @@ export default function ReviewCard({ review, isSignedIn }: ReviewCardProps) {
         return stars;
     }
 
-    const toggleLike = async () => {
-        if (!isSignedIn) {
-            return;
-        }
-        const action = liked ? "unlike" : "like";
-        review.likes = liked ? review.likes - 1 : review.likes + 1;
-        setLikes(likes + (action === "unlike" ? -1 : 1))
-        setLiked(!liked);
-
-        const data = {
-            review_id: review.review_id,
-            action: action
-        }
-        await postData("modifyLikeCount", data)
-            .then((response) => {
-                console.log(response);
-                
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
-
     return (
-        <Card shadow="sm" withBorder radius="md" p="md" style={{ display: "relative" }}>
+        <Card shadow="sm" withBorder radius="md" p="md" style={{ display: "relative", background: "transparent" }}>
             <Group justify="space-between">
-                <Text fw={500}>{review.username}</Text>
-                <Text size="sm" c="dimmed">{review.formatted_date}</Text>
+                <Text fw={500} style={{ color: "white" }}>{review.username}</Text>
+                <Text size="sm" style={{ color: "white" }}>{review.formatted_date}</Text>
             </Group>
             <Group gap={2} style={{ marginTop: '0.5rem' }}>
                 {renderStars(review.rating)}
@@ -65,30 +44,54 @@ export default function ReviewCard({ review, isSignedIn }: ReviewCardProps) {
                 align="center"
                 gap={0}
                 style={{ position: 'absolute', top: 30, right: 10, zIndex: 10 }}>
+
                 <Tooltip label="Like">
                     <ActionIcon
                         variant="transparent"
                         color="blue"
                         size="lg"
                         disabled={!isSignedIn}
-                        onClick={() => toggleLike()}
+                        styles={(theme, params) => ({
+                        root: {
+                            backgroundColor: "transparent", // no grey even when disabled
+                            opacity: params.disabled ? 1 : 1, // keep full opacity
+                            cursor: params.disabled ? "not-allowed" : "pointer",
+                        },
+                        icon: {
+                            color: params.disabled ? theme.colors.blue[6] : theme.colors.blue[6], // keep the color
+                        },
+                        })}
+                        onClick={() => {
+                            review.likes = currentlyLiked ? review.likes - 1 : review.likes + 1;
+                            onToggleLike();
+                        }}
                     >
-                        {liked ? <IconThumbUpFilled size={20} /> : <IconThumbUp size={20} />}
+                        {currentlyLiked ? <IconThumbUpFilled size={20} /> : <IconThumbUp size={20} />}
                     </ActionIcon>
                 </Tooltip>
-                <Text size="sm">{likes}</Text>
+                <Text size="sm" style={{ color: "white" }}>{review.likes}</Text>
             </Stack>
             <Stack style={{ width: "100%", marginTop: '1rem' }}
                 justify="center"
                 align="left"
             >
-                <Text size="md">Overall thoughts: {review.review_text.OverallThoughts}</Text>
-                {review.review_text.FavoriteCharacter && <Text size="md">Favorite Character: {review.review_text.FavoriteCharacter}</Text>}
-                {review.review_text.FavoritePart && <Text size="md">Favorite Part: {review.review_text.FavoritePart}</Text>}
+                <Text size="md" style={{ color: "white" }}>Overall thoughts: {review.review_text.OverallThoughts}</Text>
+                {review.review_text.FavoriteCharacter && <Text size="md" style={{ color: "white" }}>Favorite Character: {review.review_text.FavoriteCharacter}</Text>}
+                {review.review_text.FavoritePart && <Text size="md" style={{ color: "white" }}>Favorite Part: {review.review_text.FavoritePart}</Text>}
             </Stack>
-            <Text mt="sm">{""}</Text>
+            {thisUser && (
+                <Tooltip label="Delete">
+                <ActionIcon
+                    variant="transparent"
+                    color="gray"
+                    size="lg"
+                    onClick={() => deleteReview(review.review_id)}
+                    style={{ position: "absolute", bottom: 10, right: 10 }}
+                >
+                    <IconTrash size={20} />
+                </ActionIcon>
+                </Tooltip>
+            )}
         </Card>
     )
-
-
 }

@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = 'https://library-api-production-dccc.up.railway.app'
 
 export async function getData<T>(url: string, headers?: HeadersInit): Promise<T> {
     const fullUrl = `${API_URL}/${url}`;

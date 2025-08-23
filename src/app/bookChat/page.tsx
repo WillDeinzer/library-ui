@@ -8,7 +8,7 @@ import { useAuth } from "../contexts/authContext";
 import { Message } from "../types/types";
 
 export default function BookChatPage() {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const API_URL = 'https://library-api-production-dccc.up.railway.app';
     const [input, setInput] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [messages, setMessages] = useState<Message[]>([]);

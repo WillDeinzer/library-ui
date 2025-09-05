@@ -77,7 +77,6 @@ export default function ContestsPage() {
                     variant="outline"
                     radius="md"
                     color="cyan"
-                    size="md"
                     style={{
                     position: "absolute",
                     top: "1rem",
@@ -85,15 +84,17 @@ export default function ContestsPage() {
                     fontWeight: 600,
                     color: "white",
                     borderColor: "rgba(255,255,255,0.6)",
-                    backdropFilter: "blur(6px)", // frosted glass effect
+                    backdropFilter: "blur(6px)",   // frosted glass effect
                     WebkitBackdropFilter: "blur(6px)", // Safari support
                     zIndex: 500,
                     display: "flex",
                     alignItems: "center",
-                    gap: "0.5rem", // space between icon and text
+                    gap: "0.5rem",
+                    fontSize: "clamp(12px, 2.5vw, 16px)",   // responsive text
+                    padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 16px)", // responsive padding
                     }}
                 >
-                    <IconArrowLeft size={18} />
+                    <IconArrowLeft size={16} style={{ flexShrink: 0 }} />
                     Home
                 </Button>
             </Link>

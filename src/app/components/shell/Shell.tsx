@@ -50,7 +50,15 @@ export default function Shell({ children }: { children: React.ReactNode }) {
             }}
             >
                 <div style={{ flex: 1, textAlign: 'center', color: "white" }}>
-                    <Title order={1}>Northwest Buffalo Community Library</Title>
+                    <Title 
+                        order={2}
+                        fz="clamp(14px, 3vw, 24px)" // min: 14px, scales with vw, max: 24px
+                        style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                        }}
+                    >Northwest Buffalo Community Library</Title>
                 </div>
                 <Group align="center" style={{ paddingRight: '1rem' }}>
                     {isSignedIn ? (

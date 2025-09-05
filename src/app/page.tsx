@@ -164,47 +164,51 @@ export default function BookCatalogPage() {
         >
 
         <Link href="/bookChat" passHref>
-            <Button
+        <Button
             variant="outline"
             radius="md"
             color="cyan"
-            size="md"
             style={{
-                position: "absolute",
-                top: "1rem",
-                left: "1rem",
-                fontWeight: 600,
-                color: "white",
-                backdropFilter: "blur(6px)", // frosted glass effect
-                WebkitBackdropFilter: "blur(6px)", // Safari support
-                borderColor: "rgba(255,255,255,0.6)",
-                zIndex: 500,
+            position: "absolute",
+            top: "0.75rem",
+            left: "0.75rem",
+            fontWeight: 600,
+            fontSize: "clamp(12px, 3vw, 16px)", // shrink on small screens
+            padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)", // scale padding
+            color: "white",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            borderColor: "rgba(255,255,255,0.6)",
+            zIndex: 500,
+            whiteSpace: "nowrap", // prevent text wrapping
             }}
-            >
+        >
             Chat with the Library Bot!
-            </Button>
+        </Button>
         </Link>
 
         <Link href="/contests" passHref>
-            <Button
+        <Button
             variant="outline"
             radius="md"
             color="cyan"
-            size="md"
             style={{
-                position: "absolute",
-                top: "1rem",
-                right: "1rem",
-                fontWeight: 600,
-                color: "white",
-                backdropFilter: "blur(6px)", // frosted glass effect
-                WebkitBackdropFilter: "blur(6px)", // Safari support
-                borderColor: "rgba(255,255,255,0.6)",
-                zIndex: 500,
+            position: "absolute",
+            top: "0.75rem",
+            right: "0.75rem",
+            fontWeight: 600,
+            fontSize: "clamp(12px, 3vw, 16px)",
+            padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)",
+            color: "white",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            borderColor: "rgba(255,255,255,0.6)",
+            zIndex: 500,
+            whiteSpace: "nowrap",
             }}
-            >
+        >
             See Contest Winners!
-            </Button>
+        </Button>
         </Link>
 
         { !seeMore && 

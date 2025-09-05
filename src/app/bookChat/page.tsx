@@ -75,35 +75,36 @@ export default function BookChatPage() {
             style={{
                 display: "flex",
                 flexDirection: "column",
-                height: "95vh",
+                height: "88vh",
                 position: "relative",
             }}
         >
-            <Link href="/" passHref>
-                <Button
-                    variant="outline"
-                    radius="md"
-                    color="cyan"
-                    size="md"
-                    style={{
-                    position: "absolute",
-                    top: "1rem",
-                    left: "1rem",
-                    fontWeight: 600,
-                    color: "white",
-                    borderColor: "rgba(255,255,255,0.6)",
-                    backdropFilter: "blur(6px)", // frosted glass effect
-                    WebkitBackdropFilter: "blur(6px)", // Safari support
-                    zIndex: 500,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem", // space between icon and text
-                    }}
-                >
-                    <IconArrowLeft size={18} />
-                    Home
-                </Button>
-            </Link>
+        <Link href="/" passHref>
+            <Button
+                variant="outline"
+                radius="md"
+                color="cyan"
+                style={{
+                position: "absolute",
+                top: "1rem",
+                left: "1rem",
+                fontWeight: 600,
+                color: "white",
+                borderColor: "rgba(255,255,255,0.6)",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                zIndex: 500,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                fontSize: "clamp(12px, 2.5vw, 16px)",  // shrink on mobile
+                padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 16px)", // responsive padding
+                }}
+            >
+                <IconArrowLeft size={16} style={{ flexShrink: 0 }} />
+                Home
+            </Button>
+        </Link>
         <div
             style={{
             flex: 1,

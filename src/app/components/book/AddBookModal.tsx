@@ -42,6 +42,7 @@ export default function AddBookModal({ opened, onClose}: bookModalProps) {
             size="sm"
             opened={opened}
             onClose={onClose}
+            centered
         >
             <Tooltip label={add ? "Remove book" : "Add book"}>
                 <ActionIcon

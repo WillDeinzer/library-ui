@@ -1,4 +1,5 @@
 "use client";
+import { useMediaQuery } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { Book, wishlistData } from "./types/types";
 import { getData, postData } from "./services/apiService";
@@ -28,6 +29,8 @@ export default function BookCatalogPage() {
 
     const startIndex = (activePage - 1) * booksPerPage;
     const paginatedBooks = displayedBooks.slice(startIndex, startIndex + booksPerPage);
+
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     const addRemoveWishlist = (isbn: string, add: boolean) => {
         const data : wishlistData = {
@@ -164,51 +167,51 @@ export default function BookCatalogPage() {
         >
 
         <Link href="/bookChat" passHref>
-        <Button
-            variant="outline"
-            radius="md"
-            color="cyan"
-            style={{
-            position: "absolute",
-            top: "0.75rem",
-            left: "0.75rem",
-            fontWeight: 600,
-            fontSize: "clamp(12px, 3vw, 16px)", // shrink on small screens
-            padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)", // scale padding
-            color: "white",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            borderColor: "rgba(255,255,255,0.6)",
-            zIndex: 500,
-            whiteSpace: "nowrap", // prevent text wrapping
-            }}
-        >
-            Chat with the Library Bot!
-        </Button>
+            <Button
+                variant="outline"
+                radius="md"
+                color="cyan"
+                style={{
+                position: "absolute",
+                top: "0.75rem",
+                left: "0.75rem",
+                fontWeight: 600,
+                fontSize: "clamp(12px, 3vw, 16px)", // shrink on small screens
+                padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)", // scale padding
+                color: "white",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                borderColor: "rgba(255,255,255,0.6)",
+                zIndex: 500,
+                whiteSpace: "nowrap", // prevent text wrapping
+                }}
+            >
+                Chat with the Library Bot!
+            </Button>
         </Link>
 
         <Link href="/contests" passHref>
-        <Button
-            variant="outline"
-            radius="md"
-            color="cyan"
-            style={{
-            position: "absolute",
-            top: "0.75rem",
-            right: "0.75rem",
-            fontWeight: 600,
-            fontSize: "clamp(12px, 3vw, 16px)",
-            padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)",
-            color: "white",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            borderColor: "rgba(255,255,255,0.6)",
-            zIndex: 500,
-            whiteSpace: "nowrap",
-            }}
-        >
-            See Contest Winners!
-        </Button>
+            <Button
+                variant="outline"
+                radius="md"
+                color="cyan"
+                style={{
+                position: "absolute",
+                top: "0.75rem",
+                right: "0.75rem",
+                fontWeight: 600,
+                fontSize: "clamp(12px, 3vw, 16px)",
+                padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)",
+                color: "white",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                borderColor: "rgba(255,255,255,0.6)",
+                zIndex: 500,
+                whiteSpace: "nowrap",
+                }}
+            >
+                See Contest Winners!
+            </Button>
         </Link>
 
         { !seeMore && 
@@ -225,7 +228,29 @@ export default function BookCatalogPage() {
                 marginBottom: "1rem",
             }}
             >
-            <Flex justify="space-between" align="center" mb="sm">
+            <div style={{ width: "100%", marginBottom: "1rem" }}>
+            {/* Title */}
+            <Title
+                order={3}
+                style={{
+                textAlign: "center",
+                color: "white",
+                letterSpacing: "0.5px",
+                fontSize: "clamp(16px, 4vw, 24px)",
+                marginBottom: isMobile ? "0.5rem" : 0, // small spacing on mobile
+                }}
+            >
+                Book Catalog
+            </Title>
+
+            {/* Buttons */}
+            <Flex
+                direction={isMobile ? "column" : "row"}
+                align="center"
+                justify={isMobile ? "center" : "space-between"}
+                gap="sm"
+            >
+                {/* Wishlist button */}
                 <Tooltip
                 label="You must be signed in to use this feature"
                 disabled={isSignedIn}
@@ -234,58 +259,49 @@ export default function BookCatalogPage() {
                 >
                 <span>
                     <Button
-                        onClick={handleWishlistClick}
-                        disabled={!isSignedIn}
-                        variant="light"
-                        radius="md"
-                        color="cyan"
-                        styles={{
-                            root: {
-                            fontWeight: 600,
-                            color: "white",
-                            borderColor: "rgba(255,255,255,0.6)",
-                            },
-                        }}
-                        >
-                        {showWishlist ? "Show all books" : "Show wishlist"}
+                    onClick={handleWishlistClick}
+                    disabled={!isSignedIn}
+                    variant="light"
+                    radius="md"
+                    color="cyan"
+                    styles={{
+                        root: {
+                        fontWeight: 600,
+                        color: "white",
+                        borderColor: "rgba(255,255,255,0.6)",
+                        fontSize: "clamp(12px, 2.5vw, 16px)",
+                        padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 16px)",
+                        },
+                    }}
+                    >
+                    {showWishlist ? "Show all books" : "Show wishlist"}
                     </Button>
                 </span>
                 </Tooltip>
 
-                <Title
-                order={3}
-                style={{
-                    textAlign: "center",
-                    flexGrow: 1,
-                    color: "white",
-                    letterSpacing: "0.5px",
-                }}
+                {/* Admin button */}
+                {admin && (
+                <Button
+                    onClick={() => setOpened(true)}
+                    variant="outline"
+                    radius="md"
+                    color="cyan"
+                    styles={{
+                    root: {
+                        fontWeight: 600,
+                        color: "white",
+                        borderColor: "rgba(255,255,255,0.6)",
+                        fontSize: "clamp(12px, 2.5vw, 16px)",
+                        padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 16px)",
+                    },
+                    }}
                 >
-                Book Catalog
-                </Title>
-
-                { admin &&
-                    <Button
-                        disabled={!admin}
-                        onClick={() => setOpened(true)}
-                        variant="outline"
-                        radius="md"
-                        color="cyan"
-                        styles={{
-                            root: {
-                            fontWeight: 600,
-                            color: "white",
-                            borderColor: "rgba(255,255,255,0.6)",
-                            },
-                        }}
-                        >
-                        Add/Remove Book
-                    </Button>
-                }
-                { !admin && 
-                <Box w={100}></Box>
-                }
+                    Add/Remove Book
+                </Button>
+                )}
             </Flex>
+            </div>
+
 
             <Group justify="center" mt="md">
                 <Autocomplete

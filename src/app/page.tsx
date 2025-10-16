@@ -68,8 +68,9 @@ export default function BookCatalogPage() {
         setLoading(true);
         getData<Book[]>("getAllBooks")
             .then((data: Book[]) => {
-                setBooks(data);
-                getWishlist(data);
+                const newData = data.filter(book => book.title?.trim()).sort((a, b) => a.title.localeCompare(b.title));
+                setBooks(newData);
+                getWishlist(newData);
             })
             .catch((error) => {
                 console.error("Error fetching books:", error);
@@ -308,7 +309,7 @@ export default function BookCatalogPage() {
                 style={{ width: "45%" }}
                 placeholder="Search by title"
                 value={searchValue.title}
-                data={Array.from(new Set(books.map(book => book.title)))}
+                data={Array.from(new Set(displayedBooks.map(book => book.title)))}
                 onChange={(value) => handleSearchChange({ title: value })}
                 limit={10}
                 clearable
@@ -317,7 +318,7 @@ export default function BookCatalogPage() {
                 style={{ width: "45%" }}
                 placeholder="Search by author"
                 value={searchValue.author}
-                data={Array.from(new Set(books.flatMap(book => book.authors)))}
+                data={Array.from(new Set(displayedBooks.flatMap(book => book.authors)))}
                 onChange={(value) => handleSearchChange({ author: value })}
                 limit={10}
                 clearable

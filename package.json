@@ -14,7 +14,7 @@
     "@mantine/next": "^6.0.22",
     "@tabler/icons-react": "^3.34.1",
     "dayjs": "^1.11.13",
-    "next": "15.4.4",
+    "next": "^15.4.10",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },

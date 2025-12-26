@@ -3,6 +3,7 @@ import { IconArrowRight, IconBookmark, IconBookmarkFilled } from '@tabler/icons-
 import { Book } from "../../types/types";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/contexts/authContext";
+import BookSummaryModel from "./BookSummaryModel";
 
 interface BookCardProps {
     book: Book
@@ -17,6 +18,7 @@ export default function BookCard(props: BookCardProps) {
     const addRemoveWishlist: (isbn: string, add: boolean) => void = props.addRemoveWishlist;
     const handleSeeMore: (book: Book) => void = props.handleSeeMore;
     const { isSignedIn } = useAuth();
+    const [opened, setOpened] = useState<boolean>(false);
 
     const handleWishlist = () => {
         addRemoveWishlist(book.isbn, !inWishlist);
@@ -25,6 +27,14 @@ export default function BookCard(props: BookCardProps) {
 
     const seeMoreClick = () => {
         handleSeeMore(book);
+    }
+
+    const onClose = () => {
+        setOpened(false);
+    }
+
+    const handleImageClick = () => {
+        setOpened(true)
     }
 
     useEffect(() => {
@@ -89,7 +99,8 @@ export default function BookCard(props: BookCardProps) {
                     height={200}
                     radius="lg"
                     fit="contain"
-                    style={{ display: "block", marginTop: "2rem", marginBottom: "1rem" }}
+                    style={{ display: "block", marginTop: "2rem", marginBottom: "1rem", cursor: 'pointer'}}
+                    onClick={handleImageClick}
                 />
             </Card.Section>
 
@@ -116,6 +127,12 @@ export default function BookCard(props: BookCardProps) {
                     {`By ${book.authors?.[0]}`}
                 </Text>
             </Stack>
+
+            <BookSummaryModel 
+                isbn={book.isbn}
+                opened={opened}
+                onClose={onClose}
+            />
         </Card>
     )
 }

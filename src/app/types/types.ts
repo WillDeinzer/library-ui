@@ -50,3 +50,7 @@ export interface Winner {
     winner_username: string;
     win_time: string;
 }
+
+export interface Summary {
+    summary: string;
+}

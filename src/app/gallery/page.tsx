@@ -10,7 +10,8 @@ import {
     Text, 
     Box, 
     SimpleGrid,
-    Group
+    Group,
+    Anchor
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import Link from "next/link";
@@ -101,7 +102,7 @@ export default function LibraryGalleryPage() {
                             indicator: {
                                 backgroundColor: "rgba(255, 255, 255, 0.4)",
                                 transition: 'width 250ms ease',
-                                '&[data-active]': {
+                                '&[dataActive]': {
                                     backgroundColor: "cyan",
                                     width: 40
                                 }
@@ -167,9 +168,20 @@ export default function LibraryGalleryPage() {
                                     background: "rgba(0, 255, 255, 0.03)" 
                                 }}
                             >
-                                <Text c="white" size="lg" lh={1.6} mb="md">
+                            <Text c="white" size="lg" lh={1.6} mb="md">
                                     We have been collecting eggs, raising butterflies, and tagging them to support 
-                                    their conservation in connection with <strong>monarchwatch.org</strong>.
+                                    their conservation in connection with{' '}
+                                    <Anchor 
+                                        href="https://monarchwatch.org" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        c="cyan.3"
+                                        underline="hover"
+                                        fw={700}
+                                        style={{ textShadow: "0 0 8px rgba(0, 255, 255, 0.4)" }}
+                                    >
+                                        monarchwatch.org
+                                    </Anchor>.
                                 </Text>
                                 <Text c="cyan.2" size="lg" lh={1.6}>
                                     Our little library displays the miraculous monarch life cycle and provides 
@@ -263,9 +275,9 @@ export default function LibraryGalleryPage() {
                 <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg">
                     {[
                         { step: 1, label: "Egg"},
-                        { step: 2, label: "Larva"},
-                        { step: 3, label: "Pupa"},
-                        { step: 4, label: "Adult"},
+                        { step: 2, label: "Caterpillar"},
+                        { step: 3, label: "Chrysalis"},
+                        { step: 4, label: "Butterfly"},
                     ].map((item) => (
                         <Paper
                             key={item.step}

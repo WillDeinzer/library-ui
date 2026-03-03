@@ -119,7 +119,17 @@ export default function BookCatalogPage() {
         }
     }, [isSignedIn]);
 
-
+    const topButtonStyle = {
+        fontWeight: 600,
+        fontSize: "clamp(12px, 3vw, 14px)", // slightly smaller to fit 3 across
+        padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)",
+        color: "white",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+        borderColor: "rgba(255,255,255,0.6)",
+        whiteSpace: "nowrap",
+    };
+    
     const handleSearchChange = (newValue: { title?: string; author?: string }) => {
     setSearchValue(prev => ({ ...prev, ...newValue }));
 
@@ -167,53 +177,61 @@ export default function BookCatalogPage() {
             }}
         >
 
-        <Link href="/bookChat" passHref>
-            <Button
-                variant="outline"
-                radius="md"
-                color="cyan"
-                style={{
-                position: "absolute",
+        <Flex
+            direction={isMobile ? "column" : "row"}
+            justify="space-between"
+            align="center"
+            gap="xs"
+            style={{
+                position: isMobile ? "relative" : "absolute",
                 top: "0.75rem",
                 left: "0.75rem",
-                fontWeight: 600,
-                fontSize: "clamp(12px, 3vw, 16px)", // shrink on small screens
-                padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)", // scale padding
-                color: "white",
-                backdropFilter: "blur(6px)",
-                WebkitBackdropFilter: "blur(6px)",
-                borderColor: "rgba(255,255,255,0.6)",
-                zIndex: 500,
-                whiteSpace: "nowrap", // prevent text wrapping
-                }}
-            >
-                Chat with the Library Bot!
-            </Button>
-        </Link>
-
-        <Link href="/contests" passHref>
-            <Button
-                variant="outline"
-                radius="md"
-                color="cyan"
-                style={{
-                position: "absolute",
-                top: "0.75rem",
                 right: "0.75rem",
-                fontWeight: 600,
-                fontSize: "clamp(12px, 3vw, 16px)",
-                padding: "clamp(4px, 1vw, 8px) clamp(8px, 2vw, 14px)",
-                color: "white",
-                backdropFilter: "blur(6px)",
-                WebkitBackdropFilter: "blur(6px)",
-                borderColor: "rgba(255,255,255,0.6)",
                 zIndex: 500,
-                whiteSpace: "nowrap",
-                }}
-            >
-                See Contest Winners!
-            </Button>
-        </Link>
+            }}
+        >
+            <Link href="/bookChat" passHref style={{ width: isMobile ? '100%' : 'auto' }}>
+                <Button
+                    variant="outline"
+                    radius="md"
+                    color="cyan"
+                    fullWidth={isMobile}
+                    style={topButtonStyle}
+                >
+                    Chat with the Library Bot!
+                </Button>
+            </Link>
+
+            {/* NEW CENTERED GALLERY BUTTON */}
+            <Link href="/gallery" passHref style={{ width: isMobile ? '100%' : 'auto' }}>
+                <Button
+                    variant="outline"
+                    radius="md"
+                    color="cyan"
+                    fullWidth={isMobile}
+                    style={{
+                        ...topButtonStyle,
+                        // Add a slight glow to distinguish the new feature
+                        boxShadow: "0 0 10px rgba(0, 255, 255, 0.2)",
+                        backgroundColor: "rgba(0, 255, 255, 0.05)"
+                    }}
+                >
+                    Gallery & Garden Story
+                </Button>
+            </Link>
+
+            <Link href="/contests" passHref style={{ width: isMobile ? '100%' : 'auto' }}>
+                <Button
+                    variant="outline"
+                    radius="md"
+                    color="cyan"
+                    fullWidth={isMobile}
+                    style={topButtonStyle}
+                >
+                    See Contest Winners!
+                </Button>
+            </Link>
+        </Flex>
 
         { !seeMore && 
         <Container size="xl" py="md" style={{ marginTop: '2rem' }}>
